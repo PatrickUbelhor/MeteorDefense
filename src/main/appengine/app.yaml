@@ -16,19 +16,12 @@
 runtime: java
 env: flex
 
+# Removing 'server' allows me to switch to SparkJava or Spring Boot
 runtime_config:  # Optional
   jdk: openjdk8
   server: jetty9
 
 handlers:
-- url: /favicon\.ico
-  static_files: favicon.ico
-  upload: favicon\.ico
-
-- url: /index\.html
-  static_files: http_root/\1
-  upload: http_root/index\.html
-
 - url: /.*
   script: this field is required, but ignored
 
