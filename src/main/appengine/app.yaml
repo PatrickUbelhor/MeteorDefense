@@ -21,6 +21,14 @@ runtime_config:  # Optional
   server: jetty9
 
 handlers:
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+
+- url: /index\.html
+  static_files: http_root/\1
+  upload: http_root/index\.html
+
 - url: /.*
   script: this field is required, but ignored
 
