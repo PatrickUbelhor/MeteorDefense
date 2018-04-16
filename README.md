@@ -19,5 +19,5 @@
   to the Cloud Platform via basic Gradle commands.
   
 ## Artwork
-  * [Jacob Kennedy](jacubkennedy.artstation.com)
+  * Jacob Kennedy - [jacubkennedy.artstation.com](jacubkennedy.artstation.com)
   * Luis Gallegos
