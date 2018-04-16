@@ -16,6 +16,7 @@ let game = new Phaser.Game(config);
 
 gameScene.init = function() {
 	this.playerSpeed = 1.5;
+	this.enemySpeed = 2;
 	this.enemyMaxY = 280;
 	this.enemyMinY = 80;
 };
@@ -35,7 +36,6 @@ gameScene.create = function() {
 
 	this.player = this.add.sprite(40, this.sys.game.config.height / 2, 'player');
 	this.player.setScale(0.5); // Set image scale to half size
-	this.isPlayerAlive = true;
 
 	this.treasure = this.add.sprite(this.sys.game.config.width - 80, this.sys.game.config.height / 2, 'treasure');
 	this.treasure.setScale(0.6);
@@ -51,15 +51,21 @@ gameScene.create = function() {
 		}
 	});
 	Phaser.Actions.ScaleXY(this.enemies.getChildren(), -0.5, -0.5);
-	Phaser.Actions.call(this.enemies.getChildren(), function(enemy) {
-		enemy.speed = Math.random() * 2 + 1;
-	}, this);
+	// Phaser.Actions.Call(this.enemies.getChildren(), function(enemy) {
+	// 	enemy.speed = Math.random() * this.enemySpeed + 1;
+	// }, this);
+	for (let i = 0; i < this.enemies.getChildren().length; i++) {
+		this.enemies.getChildren()[i].speed = Math.random() * this.enemySpeed + 1;
+	}
 
 	this.cameras.main.resetFX();
+	this.isPlayerAlive = true;
 };
 
 gameScene.update = function() {
-	if (!this.isPlayerAlive) return;
+	if (!this.isPlayerAlive) {
+		return;
+	}
 
 
 	if (this.input.activePointer.isDown) {

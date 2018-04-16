@@ -20,4 +20,4 @@
   
 ## Artwork
   * Jacob Kennedy - [website](https://jacubkennedy.artstation.com)
-  * Luis Gallegos
+  * Luis Gallegos - [email](lfgallegos99@gmail.com)
