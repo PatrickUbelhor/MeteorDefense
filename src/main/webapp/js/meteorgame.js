@@ -17,7 +17,7 @@ let game = new Phaser.Game(config);
  */
 scene.init = function() {
 	// Constants
-	this.bulletSpeed = 20;
+	this.bulletSpeed = -20;
 	this.meteorSpeedMultiplier = 10;
 	// this.maxNumMeteors = 6;
 
@@ -42,15 +42,21 @@ scene.preload = function() {
 scene.create = function() {
 	let background = this.add.sprite(0, 0, 'background');
 	background.setOrigin(0, 0);
+	background.setScale(2);
 
+	// TODO: Scale offset based on percent of screen height, and make that percent a constant
 	this.bunker = this.add.sprite(this.sys.game.config.width / 2, this.sys.game.config.height - 80, 'bunker');
 	this.bunker.scaleX(4);
 	this.bunker.scaleY(3);
 
-	this.meteor = this.add.sprite(this.sys.game.config.width / 2, 0, 'meteor');
+	this.meteor = this.add.sprite(this.sys.game.config.width / 2, this.sys.game.config.height / 2, 'meteor');
 	this.meteor.setScale(0.5);
 	this.meteor.speed = Math.random() * this.meteorSpeedMultiplier + 2;
 	this.meteor.isAlive = true;
+
+	// TODO: Scale offset based on percent of screen height, and make that percent a constant
+	this.bullet = this.addSprite(this.sys.game.config.width / 2, this.sys.game.config.height - 80, 'bullet');
+	this.bullet.speed = 0;
 
 	this.cameras.main.resetFX();
 	this.playerHealth = 10;
@@ -66,8 +72,16 @@ scene.update = function() {
 		return;
 	}
 
+	this.bullet.y += this.bullet.speed;
+	// if (Phaser.Geom.Intersects.RectangleToRectangle(this.bullet.getBounds(), this.meteor.getBounds())) {
+	// 	this.meteor.y = this.sys.game.config.height / 2;
+	// 	this.bullet.y = this.sys.game.config.height - 80; // TODO: Scale with display
+	// 	this.bullet.speed = 0;
+	// }
+	// this.input.onDown.add(this.shoot, this);
+
 	// Move meteor and check for intersection with bunker
-	this.meteor.x += this.meteor.speed;
+	this.meteor.y += this.meteor.speed;
 	if (Phaser.Geom.Intersects.RectangleToRectangle(this.meteor.getBounds(), this.bunker.getBounds())) {
 		this.playerHealth--; // If meteor collides with bunker, reduce player health
 		this.meteor.x = 0;
@@ -92,4 +106,8 @@ scene.gameOver = function() {
 	this.time.delayedCall(500, function() {
 		this.scene.restart();
 	}, [], this);
+};
+
+scene.shoot = function() {
+	this.bullet.speed = this.bulletSpeed;
 };

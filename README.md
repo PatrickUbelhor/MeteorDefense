@@ -1,4 +1,6 @@
 # MeteorDefense
+A web app/game in which players shoot down incoming meteors.
+
 
 ## Technologies
 
@@ -20,4 +22,4 @@
   
 ## Artwork
   * Jacob Kennedy - [website](https://jacubkennedy.artstation.com)
-  * Luis Gallegos - [email](lfgallegos99@gmail.com)
+  * Luis Gallegos - lfgallegos99@gmail.com
