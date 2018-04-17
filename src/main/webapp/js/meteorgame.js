@@ -18,7 +18,12 @@ let game = new Phaser.Game(config);
 scene.init = function() {
 	// Constants
 	this.bulletSpeed = -20;
-	this.meteorSpeedMultiplier = 10;
+	this.meteorSpeedMultiplier = 8;
+	this.meteorSpeedBase = 3;
+	this.meteorSpawnLowest = -50;
+	this.meteorSpawnRangeY = 50;
+	this.meteorSpawnCenter = this.sys.game.config.width / 2;
+	this.meteorSpawnRangeX = this.sys.game.config.width / 2;
 	// this.maxNumMeteors = 6;
 
 	// Variables
@@ -46,16 +51,15 @@ scene.create = function() {
 
 	// TODO: Scale offset based on percent of screen height, and make that percent a constant
 	this.bunker = this.add.sprite(this.sys.game.config.width / 2, this.sys.game.config.height - 80, 'bunker');
-	this.bunker.scaleX(4);
-	this.bunker.scaleY(3);
+	this.bunker.setScale(3);
 
-	this.meteor = this.add.sprite(this.sys.game.config.width / 2, this.sys.game.config.height / 2, 'meteor');
+	this.meteor = this.add.sprite(this.sys.game.config.width / 2, 0, 'meteor');
 	this.meteor.setScale(0.5);
-	this.meteor.speed = Math.random() * this.meteorSpeedMultiplier + 2;
-	this.meteor.isAlive = true;
+	this.resetMeteor(this.meteor);
 
 	// TODO: Scale offset based on percent of screen height, and make that percent a constant
-	this.bullet = this.addSprite(this.sys.game.config.width / 2, this.sys.game.config.height - 80, 'bullet');
+	this.bullet = this.add.sprite(this.sys.game.config.width / 2, this.sys.game.config.height - 200, 'bullet');
+	this.bullet.setScale(0.2);
 	this.bullet.speed = 0;
 
 	this.cameras.main.resetFX();
@@ -73,18 +77,22 @@ scene.update = function() {
 	}
 
 	this.bullet.y += this.bullet.speed;
-	// if (Phaser.Geom.Intersects.RectangleToRectangle(this.bullet.getBounds(), this.meteor.getBounds())) {
-	// 	this.meteor.y = this.sys.game.config.height / 2;
-	// 	this.bullet.y = this.sys.game.config.height - 80; // TODO: Scale with display
-	// 	this.bullet.speed = 0;
-	// }
-	// this.input.onDown.add(this.shoot, this);
+	if (Phaser.Geom.Intersects.RectangleToRectangle(this.bullet.getBounds(), this.meteor.getBounds())) {
+		this.resetMeteor(this.meteor);
+		this.bullet.speed = 0;
+		this.score++;
+	}
 
 	// Move meteor and check for intersection with bunker
 	this.meteor.y += this.meteor.speed;
 	if (Phaser.Geom.Intersects.RectangleToRectangle(this.meteor.getBounds(), this.bunker.getBounds())) {
 		this.playerHealth--; // If meteor collides with bunker, reduce player health
-		this.meteor.x = 0;
+		this.resetMeteor(this.meteor);
+	}
+
+	// Reset meteor if it hit the ground
+	if (this.meteor.y >= this.sys.game.config.height) {
+		this.resetMeteor(this.meteor);
 	}
 
 	// End if health is 0
@@ -98,8 +106,8 @@ scene.update = function() {
  */
 scene.gameOver = function() {
 	// Fade camera
-	this.time.delayedCall(250, function() {
-		this.cameras.main.fade(250);
+	this.time.delayedCall(100, function() {
+		this.cameras.main.fade(400);
 	}, [], this);
 
 	// Restart game
@@ -110,4 +118,10 @@ scene.gameOver = function() {
 
 scene.shoot = function() {
 	this.bullet.speed = this.bulletSpeed;
+};
+
+scene.resetMeteor = function(meteor) {
+	meteor.x = (Math.random() - 0.5) * this.meteorSpawnRangeX + this.meteorSpawnCenter;
+	meteor.y = -1 * Math.random() * this.meteorSpawnRangeY + this.meteorSpawnLowest;
+	meteor.speed = Math.random() * this.meteorSpeedMultiplier + this.meteorSpeedBase;
 };
