@@ -18,13 +18,13 @@ let game = new Phaser.Game(config);
 scene.init = function() {
 	// Constants
 	this.bulletSpeed = -20;
-	this.meteorSpeedMultiplier = 8;
-	this.meteorSpeedBase = 3;
+	this.meteorSpeedMultiplier = 5;
+	this.meteorSpeedBase = 2;
 	this.meteorSpawnLowest = -50;
 	this.meteorSpawnRangeY = 50;
 	this.meteorSpawnCenter = this.sys.game.config.width / 2;
 	this.meteorSpawnRangeX = this.sys.game.config.width / 2;
-	this.maxNumMeteors = 6;
+	this.maxNumMeteors = 5;
 
 	// Variables
 	this.score = 0;
@@ -45,14 +45,15 @@ scene.preload = function() {
  * Places initial objects on the scene (runs once).
  */
 scene.create = function() {
-	let background = this.add.sprite(0, 0, 'background');
-	background.setOrigin(0, 0);
-	background.setScale(0.5);
+	this.backgr = this.add.sprite(0, 0, 'background');
+	this.backgr.setOrigin(0, 0);
+	this.backgr.setScale(0.5);
 
 	// TODO: Scale offset based on percent of screen height, and make that percent a constant
 	this.bunker = this.add.sprite(this.sys.game.config.width / 2, this.sys.game.config.height - 80, 'bunker');
 	this.bunker.setScale(3);
 
+	// Create meteors
 	this.meteors = this.add.group({
 		key: 'meteor',
 		repeat: this.maxNumMeteors,
@@ -66,8 +67,7 @@ scene.create = function() {
 	Phaser.Actions.ScaleXY(this.meteors.getChildren(), -0.5, -0.5);
 	this.resetMeteors(this.meteors.getChildren());
 
-	// this.input.activePointer.
-
+	// Create bullet
 	this.bullet = this.add.sprite(0, 0, 'bullet');
 	this.bullet.setScale(0.2);
 	this.resetBullet(this.bullet);
@@ -88,8 +88,13 @@ scene.update = function() {
 
 	let meteors = this.meteors.getChildren();
 
+	if (this.input.activePointer.justUp && !this.bullet.isMoving) {
+		this.shoot();
+	}
+
 	// Move bullet and check for intersection with meteors
-	this.bullet.y += this.bullet.speed;
+	this.bullet.x += this.bullet.speedX;
+	this.bullet.y += this.bullet.speedY;
 	for (let i = 0; i < this.maxNumMeteors; i++) {
 		if (Phaser.Geom.Intersects.RectangleToRectangle(this.bullet.getBounds(), meteors[i].getBounds())) {
 			this.resetMeteor(meteors[i]);
@@ -97,6 +102,10 @@ scene.update = function() {
 			this.score++;
 			break;
 		}
+	}
+
+	if (!Phaser.Geom.Intersects.RectangleToRectangle(this.bullet.getBounds(), this.backgr.getBounds())) {
+		this.resetBullet(this.bullet);
 	}
 
 	// Move meteor and check for intersection with bunker
@@ -135,12 +144,19 @@ scene.gameOver = function() {
 };
 
 scene.shoot = function() {
-	this.bullet.speed = this.bulletSpeed;
+	let deltaX = this.bullet.x - this.input.activePointer.x;
+	let deltaY = this.bullet.y - this.input.activePointer.y;
+	let delta = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
+	let ratio = this.bulletSpeed / delta;
+
+	this.bullet.speedX = ratio * deltaX;
+	this.bullet.speedY = ratio * deltaY;
+	this.bullet.isMoving = true;
 };
 
 scene.resetMeteor = function(meteor) {
 	meteor.x = (Math.random() - 0.5) * this.meteorSpawnRangeX + this.meteorSpawnCenter;
-	meteor.y = -1 * Math.random() * this.meteorSpawnRangeY + this.meteorSpawnLowest;
+	meteor.y = -Math.random() * this.meteorSpawnRangeY + this.meteorSpawnLowest;
 	meteor.speed = Math.random() * this.meteorSpeedMultiplier + this.meteorSpeedBase;
 };
 
@@ -154,5 +170,7 @@ scene.resetMeteors = function(meteors) {
 scene.resetBullet = function(bullet) {
 	bullet.x = this.sys.game.config.width / 2;
 	bullet.y = this.sys.game.config.height - 200; // TODO: Scale offset based on percent of screen height
-	bullet.speed = 0;
+	bullet.speedX = 0;
+	bullet.speedY = 0;
+	bullet.isMoving = false;
 };
