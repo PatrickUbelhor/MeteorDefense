@@ -1,4 +1,5 @@
 // Create a new scene named "Game"
+let ROOT = "https://meteor-defense.appspot.com";
 let scene = new Phaser.Scene('Game');
 
 // Our game's configuration
@@ -39,6 +40,7 @@ scene.preload = function() {
 	this.load.image('bullet', 'assets/player.png');
 	this.load.image('meteor', 'assets/dragon.png');
 	this.load.image('bunker', 'assets/treasure.png');
+	this.load.image('barrel', 'assets/barrel.png');
 };
 
 /**
@@ -52,6 +54,9 @@ scene.create = function() {
 	// TODO: Scale offset based on percent of screen height, and make that percent a constant
 	this.bunker = this.add.sprite(this.sys.game.config.width / 2, this.sys.game.config.height - 80, 'bunker');
 	this.bunker.setScale(3);
+
+	this.barrel = this.add.sprite(this.sys.game.config.width / 2, this.sys.game.config.height - 200, 'barrel');
+	this.barrel.setScale(0.25);
 
 	// Create meteors
 	this.meteors = this.add.group({
@@ -88,7 +93,7 @@ scene.update = function() {
 
 	let meteors = this.meteors.getChildren();
 
-	if (this.input.activePointer.justUp && !this.bullet.isMoving) {
+	if (this.input.activePointer.justDown && !this.bullet.isMoving) {
 		this.shoot();
 	}
 
@@ -103,6 +108,10 @@ scene.update = function() {
 			break;
 		}
 	}
+
+	let deltaX = this.barrel.x - this.input.activePointer.x;
+	let deltaY = this.barrel.y - this.input.activePointer.y;
+	this.barrel.angle = 360 * Math.atan2(deltaY, deltaX) / (2 * Math.PI) - 90; // Convert rad->deg, rotate 90
 
 	if (!Phaser.Geom.Intersects.RectangleToRectangle(this.bullet.getBounds(), this.backgr.getBounds())) {
 		this.resetBullet(this.bullet);
@@ -139,7 +148,7 @@ scene.gameOver = function() {
 
 	// Restart game
 	this.time.delayedCall(500, function() {
-		this.scene.restart();
+		window.location.replace("http://www.google.com");
 	}, [], this);
 };
 
