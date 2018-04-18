@@ -55,9 +55,6 @@ scene.create = function() {
 	this.bunker = this.add.sprite(this.sys.game.config.width / 2, this.sys.game.config.height - 80, 'bunker');
 	this.bunker.setScale(3);
 
-	this.barrel = this.add.sprite(this.sys.game.config.width / 2, this.sys.game.config.height - 200, 'barrel');
-	this.barrel.setScale(0.25);
-
 	// Create meteors
 	this.meteors = this.add.group({
 		key: 'meteor',
@@ -76,6 +73,11 @@ scene.create = function() {
 	this.bullet = this.add.sprite(0, 0, 'bullet');
 	this.bullet.setScale(0.2);
 	this.resetBullet(this.bullet);
+
+	// Create turret barrel
+	// TODO: Make this scale proportionally
+	this.barrel = this.add.sprite(this.sys.game.config.width / 2, this.sys.game.config.height - 180, 'barrel');
+	this.barrel.setScale(0.8);
 
 	this.cameras.main.resetFX();
 	this.playerHealth = 10;

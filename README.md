@@ -1,5 +1,5 @@
 # MeteorDefense
-A web app/game in which players shoot down incoming meteors.
+A web game in which players shoot down incoming meteors.
 
 
 ## Technologies
