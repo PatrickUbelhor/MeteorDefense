@@ -16,22 +16,32 @@
 -->
 <!-- [START config] -->
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
-  <servlet>
-    <servlet-name>hello</servlet-name>
-    <servlet-class>main.HelloAppEngine</servlet-class>
-  </servlet>
+    <servlet>
+        <servlet-name>hello</servlet-name>
+        <servlet-class>main.Hello</servlet-class>
+    </servlet>
 
-  <servlet-mapping>
-    <servlet-name>hello</servlet-name>
-    <url-pattern>/hello</url-pattern>
-  </servlet-mapping>
+    <servlet>
+        <servlet-name>leaderboard</servlet-name>
+        <servlet-class>main.Leaderboard</servlet-class>
+    </servlet>
 
-  <servlet-mapping>
-      <servlet-name>default</servlet-name>
-      <url-pattern>/favicon.ico</url-pattern>
-      <url-pattern>/index.html</url-pattern>
-      <url-pattern>/js/*</url-pattern>
-      <url-pattern>/assets/*</url-pattern>
-  </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>hello</servlet-name>
+        <url-pattern>/hello</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>leaderboard</servlet-name>
+        <url-pattern>/leaderboard</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/favicon.ico</url-pattern>
+        <url-pattern>/index.html</url-pattern>
+        <url-pattern>/js/*</url-pattern>
+        <url-pattern>/assets/*</url-pattern>
+    </servlet-mapping>
 </web-app>
   <!-- [END config] -->

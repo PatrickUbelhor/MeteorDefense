@@ -19,7 +19,7 @@ let game = new Phaser.Game(config);
 scene.init = function() {
 	// Constants
 	this.bulletSpeed = -20;
-	this.meteorSpeedMultiplier = 5;
+	this.meteorSpeedMultiplier = 3;
 	this.meteorSpeedBase = 2;
 	this.meteorSpawnLowest = -50;
 	this.meteorSpawnRangeY = 50;

@@ -37,6 +37,8 @@ dependencies {
 // Add your dependencies here.
 //  compile 'com.google.cloud:google-cloud:+'   // Latest Cloud API's http://googlecloudplatform.github.io/google-cloud-java
     compile 'com.sparkjava:spark-core:2.3'
+    compile 'mysql:mysql-connector-java:6.0.5'
+    compile 'com.google.cloud.sql:mysql-socket-factory-connector-j-6:1.0.5'
 
     testCompile 'junit:junit:4.12'
     testCompile 'com.google.truth:truth:0.33'
