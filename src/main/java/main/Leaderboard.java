@@ -36,8 +36,12 @@ public class Leaderboard extends HttpServlet {
 		// TODO: get username from request
 		// TODO: get score from request
 		
-		String username = "";
-		int score = 0;
+		String username = request.getHeader("username");
+		Integer score = request.getIntHeader("score");
+		
+		/* TODO: respond in some way if username or score is null
+		 * Probably just want to return the leaderboard page; assume user isn't posting a score.
+		 */
 		
 		try (PreparedStatement statementCreateScore = conn.prepareStatement(createScoreSql)) {
 			conn.createStatement().executeUpdate(createTableSql);
