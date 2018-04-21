@@ -67,18 +67,43 @@ public class Leaderboard extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 		try {
+			String instance;
+			String user;
+			String password;
+			String database;
 			String url;
 			
 			Properties properties = new Properties();
 			try {
-				properties.load(getServletContext().getResourceAsStream("/WEB-INF/classes/config.properties"));
-				url = properties.getProperty("sqlUrl");
+				properties.load(getServletContext().getResourceAsStream("/WEB-INF/config.properties"));
+				instance = properties.getProperty("instanceConnectionName");
+				user = properties.getProperty("user");
+				password = properties.getProperty("password");
+				database = properties.getProperty("database");
+				
+				if (instance == null || instance.isEmpty()
+					|| user == null || user.isEmpty()
+					|| password == null || password.isEmpty()
+					|| database == null || database.isEmpty()) {
+					
+					throw new IOException("Empty parameter");
+				}
+				
+				url =
+					"jdbc:mysql://google/" + database +
+					"?cloudSqlInstance=" + instance +
+					"&amp;socketFactory=com.google.cloud.sql.mysql.SocketFactory&amp;user=" + user +
+					"&amp;password=" + password +
+					"&amp;useSSL=false";
+				
+				
 			} catch (IOException e) {
 				log("No property", e); // Servlet init should never fail
 				return;
 			}
 			
-			log("Connecting to: " + url);
+//			log("Connecting to: " + url); Leaving commented out to prevent password from being logged
+			log("Connecting to: " + instance);
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
 				conn = DriverManager.getConnection(url);
