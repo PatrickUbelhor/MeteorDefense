@@ -28,7 +28,12 @@ public class Leaderboard extends HttpServlet {
 			"score INT NOT NULL, " + // TODO: Make unsigned, maybe smaller
 			"PRIMARY KEY (username) )";
 		
-		final String createScoreSql = "INSERT INTO scores (username, score) VALUES (?, ?)";
+		final String createScoreSql =
+			"INSERT INTO scores (username, score) " +
+				"VALUES(?, ?) " +
+			"ON DUPLICATE KEY UPDATE " +
+				"score = GREATEST(score, VALUES(score))";
+		
 		final String selectSql = "SELECT username, score FROM scores ORDER BY score DESC LIMIT 10";
 		
 		PrintWriter out = response.getWriter();
@@ -58,6 +63,8 @@ public class Leaderboard extends HttpServlet {
 		} catch (SQLException e) {
 			throw new ServletException("SQL error", e);
 		}
+		
+		
 		
 	}
 	
@@ -90,9 +97,9 @@ public class Leaderboard extends HttpServlet {
 				url =
 					"jdbc:mysql://google/" + database +
 					"?cloudSqlInstance=" + instance +
-					"&amp;socketFactory=com.google.cloud.sql.mysql.SocketFactory&amp;user=" + user +
-					"&amp;password=" + password +
-					"&amp;useSSL=false";
+					"&socketFactory=com.google.cloud.sql.mysql.SocketFactory&user=" + user +
+					"&password=" + password +
+					"&useSSL=false";
 				
 				
 			} catch (IOException e) {

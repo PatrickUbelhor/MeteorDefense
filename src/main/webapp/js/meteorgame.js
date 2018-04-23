@@ -1,5 +1,5 @@
 // Create a new scene named "Game"
-let ROOT = "https://meteor-defense.appspot.com";
+let ROOT = "https://meteor-defense.appspot.com/";
 let scene = new Phaser.Scene('Game');
 
 // Our game's configuration
@@ -82,7 +82,7 @@ scene.create = function() {
 	this.resetMeteors(this.meteors.getChildren());
 
 	this.cameras.main.resetFX();
-	this.playerHealth = 10;
+	this.playerHealth = 5;
 	this.score = 0;
 };
 
@@ -154,8 +154,16 @@ scene.gameOver = function() {
 
 	// Restart game
 	this.time.delayedCall(500, function() {
-		this.scene.restart();
+		// this.scene.restart();
 		// window.location.replace("http://www.google.com");
+
+		var request = new XMLHttpRequest();
+
+		request.open('GET', ROOT + "leaderboard", false);
+		request.setRequestHeader("username", "VictoryScreech");
+		request.setRequestHeader("score", this.score);
+		request.send();
+		alert(request.responseText);
 	}, [], this);
 };
 
