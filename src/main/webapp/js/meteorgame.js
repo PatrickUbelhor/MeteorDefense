@@ -19,6 +19,8 @@ let game = new Phaser.Game(config);
 scene.init = function() {
 	// Constants
 	this.bulletSpeed = -20;
+	this.meteorAngularVelBase = 0.2;
+	this.meteorAngularVelRange = 4;
 	this.meteorSpeedMultiplier = 3;
 	this.meteorSpeedBase = 2;
 	this.meteorSpawnLowest = -50;
@@ -122,6 +124,7 @@ scene.update = function() {
 	// Move meteor and check for intersection with bunker
 	for (let i = 0; i < this.maxNumMeteors; i++) {
 		meteors[i].y += meteors[i].speed;
+		meteors[i].angle += meteors[i].angularVel;
 		if (Phaser.Geom.Intersects.RectangleToRectangle(meteors[i].getBounds(), this.bunker.getBounds())) {
 			this.playerHealth--;
 			this.resetMeteor(meteors[i]);
@@ -169,6 +172,10 @@ scene.resetMeteor = function(meteor) {
 	meteor.x = (Math.random() - 0.5) * this.meteorSpawnRangeX + this.meteorSpawnCenter;
 	meteor.y = -Math.random() * this.meteorSpawnRangeY + this.meteorSpawnLowest;
 	meteor.speed = Math.random() * this.meteorSpeedMultiplier + this.meteorSpeedBase;
+	meteor.angularVel =
+		Math.random()
+		* (this.meteorAngularVelRange - (this.meteorAngularVelRange / 2)) // Subtraction by half allows (-speed, speed) range
+		+ this.meteorAngularVelBase;
 };
 
 scene.resetMeteors = function(meteors) {
