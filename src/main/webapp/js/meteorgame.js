@@ -38,7 +38,7 @@ scene.init = function() {
 scene.preload = function() {
 	this.load.image('background', 'assets/background.png');
 	this.load.image('bullet', 'assets/player.png');
-	this.load.image('meteor', 'assets/dragon.png');
+	this.load.image('meteor', 'assets/meteor1.png');
 	this.load.image('bunker', 'assets/treasure.png');
 	this.load.image('barrel', 'assets/barrel.png');
 };

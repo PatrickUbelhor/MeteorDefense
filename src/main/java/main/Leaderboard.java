@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Patrick Ubelhor
- * @version 04/19/2018
+ * @version 04/20/2018
  */
 public class Leaderboard extends HttpServlet {
 	private java.sql.Connection conn;
@@ -33,8 +33,6 @@ public class Leaderboard extends HttpServlet {
 		
 		PrintWriter out = response.getWriter();
 		response.setContentType("text/plain");
-		// TODO: get username from request
-		// TODO: get score from request
 		
 		String username = request.getHeader("username");
 		Integer score = request.getIntHeader("score");
