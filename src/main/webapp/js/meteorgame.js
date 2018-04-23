@@ -26,7 +26,7 @@ scene.init = function() {
 	this.meteorSpawnLowest = -50;
 	this.meteorSpawnRangeY = 50;
 	this.meteorSpawnCenter = this.sys.game.config.width / 2;
-	this.meteorSpawnRangeX = this.sys.game.config.width / 2;
+	this.meteorSpawnRangeX = this.sys.game.config.width / 1.5;
 	this.maxNumMeteors = 5;
 
 	// Variables
@@ -41,7 +41,7 @@ scene.preload = function() {
 	this.load.image('background', 'assets/background.png');
 	this.load.image('bullet', 'assets/player.png');
 	this.load.image('meteor', 'assets/meteor1.png');
-	this.load.image('bunker', 'assets/treasure.png');
+	this.load.image('bunker', 'assets/base.png');
 	this.load.image('barrel', 'assets/barrel.png');
 };
 
@@ -53,9 +53,19 @@ scene.create = function() {
 	this.backgr.setOrigin(0, 0);
 	this.backgr.setScale(0.5);
 
+	// Create bullet
+	this.bullet = this.add.sprite(0, 0, 'bullet');
+	this.bullet.setScale(0.2);
+	this.resetBullet(this.bullet);
+
+	// Create turret barrel
+	// TODO: Make this scale proportionally
+	this.barrel = this.add.sprite(this.sys.game.config.width / 2, this.sys.game.config.height - 80, 'barrel');
+	this.barrel.setScale(1);
+
 	// TODO: Scale offset based on percent of screen height, and make that percent a constant
 	this.bunker = this.add.sprite(this.sys.game.config.width / 2, this.sys.game.config.height - 80, 'bunker');
-	this.bunker.setScale(3);
+	this.bunker.setScale(1.75);
 
 	// Create meteors
 	this.meteors = this.add.group({
@@ -68,18 +78,8 @@ scene.create = function() {
 			stepY: 0
 		}
 	});
-	Phaser.Actions.ScaleXY(this.meteors.getChildren(), -0.5, -0.5);
+	Phaser.Actions.ScaleXY(this.meteors.getChildren(), -0.6, -0.6);
 	this.resetMeteors(this.meteors.getChildren());
-
-	// Create bullet
-	this.bullet = this.add.sprite(0, 0, 'bullet');
-	this.bullet.setScale(0.2);
-	this.resetBullet(this.bullet);
-
-	// Create turret barrel
-	// TODO: Make this scale proportionally
-	this.barrel = this.add.sprite(this.sys.game.config.width / 2, this.sys.game.config.height - 180, 'barrel');
-	this.barrel.setScale(0.8);
 
 	this.cameras.main.resetFX();
 	this.playerHealth = 10;
@@ -153,7 +153,8 @@ scene.gameOver = function() {
 
 	// Restart game
 	this.time.delayedCall(500, function() {
-		window.location.replace("http://www.google.com");
+		this.scene.restart();
+		// window.location.replace("http://www.google.com");
 	}, [], this);
 };
 
@@ -172,10 +173,7 @@ scene.resetMeteor = function(meteor) {
 	meteor.x = (Math.random() - 0.5) * this.meteorSpawnRangeX + this.meteorSpawnCenter;
 	meteor.y = -Math.random() * this.meteorSpawnRangeY + this.meteorSpawnLowest;
 	meteor.speed = Math.random() * this.meteorSpeedMultiplier + this.meteorSpeedBase;
-	meteor.angularVel =
-		Math.random()
-		* (this.meteorAngularVelRange - (this.meteorAngularVelRange / 2)) // Subtraction by half allows (-speed, speed) range
-		+ this.meteorAngularVelBase;
+	meteor.angularVel = (Math.random() - 0.5) * this.meteorAngularVelRange + this.meteorAngularVelBase;
 };
 
 scene.resetMeteors = function(meteors) {
@@ -187,7 +185,7 @@ scene.resetMeteors = function(meteors) {
 
 scene.resetBullet = function(bullet) {
 	bullet.x = this.sys.game.config.width / 2;
-	bullet.y = this.sys.game.config.height - 200; // TODO: Scale offset based on percent of screen height
+	bullet.y = this.sys.game.config.height - 80; // TODO: Scale offset based on percent of screen height
 	bullet.speedX = 0;
 	bullet.speedY = 0;
 	bullet.isMoving = false;
