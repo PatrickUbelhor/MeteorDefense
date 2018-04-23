@@ -39,7 +39,7 @@ scene.init = function() {
  */
 scene.preload = function() {
 	this.load.image('background', 'assets/background.png');
-	this.load.image('bullet', 'assets/player.png');
+	this.load.image('bullet', 'assets/bullet.png');
 	this.load.image('meteor', 'assets/meteor1.png');
 	this.load.image('bunker', 'assets/base.png');
 	this.load.image('barrel', 'assets/barrel.png');
@@ -55,7 +55,7 @@ scene.create = function() {
 
 	// Create bullet
 	this.bullet = this.add.sprite(0, 0, 'bullet');
-	this.bullet.setScale(0.2);
+	this.bullet.setScale(1);
 	this.resetBullet(this.bullet);
 
 	// Create turret barrel
@@ -97,8 +97,13 @@ scene.update = function() {
 
 	let meteors = this.meteors.getChildren();
 
+	let deltaX = this.barrel.x - this.input.activePointer.x;
+	let deltaY = this.barrel.y - this.input.activePointer.y;
+	let angle = Math.atan2(deltaY, deltaX) - (Math.PI / 2); // Rotate 90 degrees so y axis is polar 0
+	this.barrel.angle = radToDeg(angle);
+
 	if (this.input.activePointer.justDown && !this.bullet.isMoving) {
-		this.shoot();
+		this.shoot(angle);
 	}
 
 	// Move bullet and check for intersection with meteors
@@ -112,10 +117,6 @@ scene.update = function() {
 			break;
 		}
 	}
-
-	let deltaX = this.barrel.x - this.input.activePointer.x;
-	let deltaY = this.barrel.y - this.input.activePointer.y;
-	this.barrel.angle = 360 * Math.atan2(deltaY, deltaX) / (2 * Math.PI) - 90; // Convert rad->deg, rotate 90
 
 	if (!Phaser.Geom.Intersects.RectangleToRectangle(this.bullet.getBounds(), this.backgr.getBounds())) {
 		this.resetBullet(this.bullet);
@@ -158,14 +159,10 @@ scene.gameOver = function() {
 	}, [], this);
 };
 
-scene.shoot = function() {
-	let deltaX = this.bullet.x - this.input.activePointer.x;
-	let deltaY = this.bullet.y - this.input.activePointer.y;
-	let delta = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
-	let ratio = this.bulletSpeed / delta;
-
-	this.bullet.speedX = ratio * deltaX;
-	this.bullet.speedY = ratio * deltaY;
+scene.shoot = function(angle) {
+	this.bullet.speedX = -Math.sin(angle) * this.bulletSpeed;
+	this.bullet.speedY = Math.cos(angle) * this.bulletSpeed;
+	this.bullet.angle = radToDeg(angle);
 	this.bullet.isMoving = true;
 };
 
@@ -189,4 +186,8 @@ scene.resetBullet = function(bullet) {
 	bullet.speedX = 0;
 	bullet.speedY = 0;
 	bullet.isMoving = false;
+};
+
+radToDeg = function(angle) {
+	return (360 * angle / (2 * Math.PI));
 };
