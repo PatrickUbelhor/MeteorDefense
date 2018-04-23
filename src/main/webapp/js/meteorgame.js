@@ -159,11 +159,13 @@ scene.gameOver = function() {
 
 		var request = new XMLHttpRequest();
 
-		request.open('GET', ROOT + "leaderboard", false);
+		request.open('PUT', ROOT + "leaderboard", false);
 		request.setRequestHeader("username", "VictoryScreech");
 		request.setRequestHeader("score", this.score);
 		request.send();
-		alert(request.responseText);
+		// alert(request.responseText);
+
+		window.location.replace(ROOT + "leaderboard");
 	}, [], this);
 };
 

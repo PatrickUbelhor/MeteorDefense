@@ -15,13 +15,14 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Patrick Ubelhor
- * @version 04/20/2018
+ * @version 04/23/2018
  */
 public class Leaderboard extends HttpServlet {
 	private java.sql.Connection conn;
 	
 	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+	public void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		
 		final String createTableSql =
 			"CREATE TABLE IF NOT EXISTS scores ( " +
 			"username VARCHAR(32), " +
@@ -30,42 +31,42 @@ public class Leaderboard extends HttpServlet {
 		
 		final String createScoreSql =
 			"INSERT INTO scores (username, score) " +
-				"VALUES(?, ?) " +
+			"VALUES(?, ?) " +
 			"ON DUPLICATE KEY UPDATE " +
-				"score = GREATEST(score, VALUES(score))";
-		
-		final String selectSql = "SELECT username, score FROM scores ORDER BY score DESC LIMIT 10";
-		
-		PrintWriter out = response.getWriter();
-		response.setContentType("text/plain");
+			"score = GREATEST(score, VALUES(score))";
 		
 		String username = request.getHeader("username");
-		Integer score = request.getIntHeader("score");
-		
-		/* TODO: respond in some way if username or score is null
-		 * Probably just want to return the leaderboard page; assume user isn't posting a score.
-		 */
+		int score = request.getIntHeader("score");
 		
 		try (PreparedStatement statementCreateScore = conn.prepareStatement(createScoreSql)) {
 			conn.createStatement().executeUpdate(createTableSql);
 			statementCreateScore.setString(1, username);
 			statementCreateScore.setInt(2, score);
 			statementCreateScore.executeUpdate();
-			
-			try (ResultSet rs = conn.prepareStatement(selectSql).executeQuery()) {
-				out.print("Highest 10 scores:\n");
-				while (rs.next()) {
-					String savedName = rs.getString("username");
-					String savedScore = rs.getString("score");
-					out.print("User: " + savedName + "  Score: " + savedScore + "\n");
-				}
+		} catch (SQLException e) {
+			throw new ServletException("SQL error", e);
+		}
+	}
+	
+	
+	@Override
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		
+		final String selectSql = "SELECT username, score FROM scores ORDER BY score DESC LIMIT 10";
+		
+		PrintWriter out = response.getWriter();
+		response.setContentType("text/plain");
+		
+		try (ResultSet rs = conn.prepareStatement(selectSql).executeQuery()) {
+			out.print("Highest 10 scores:\n");
+			while (rs.next()) {
+				String savedName = rs.getString("username");
+				String savedScore = rs.getString("score");
+				out.print("User: " + savedName + "  Score: " + savedScore + "\n");
 			}
 		} catch (SQLException e) {
 			throw new ServletException("SQL error", e);
 		}
-		
-		
-		
 	}
 	
 	
