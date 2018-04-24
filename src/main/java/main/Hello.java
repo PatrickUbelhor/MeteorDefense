@@ -18,14 +18,4 @@ public class Hello extends HttpServlet {
 		response.getWriter().println("Hello, World!");
 	}
 	
-	
-	private String get404() {
-		return "Error 404 oh nooooooooo";
-	}
-	
-	
-	private String get500() {
-		return "Error 500...";
-	}
-	
 }

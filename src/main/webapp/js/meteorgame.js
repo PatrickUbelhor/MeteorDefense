@@ -155,17 +155,17 @@ scene.gameOver = function() {
 	// Restart game
 	this.time.delayedCall(500, function() {
 		// this.scene.restart();
-		// window.location.replace("http://www.google.com");
 
-		var request = new XMLHttpRequest();
+		// var request = new XMLHttpRequest();
 
-		request.open('PUT', ROOT + "leaderboard", false);
-		request.setRequestHeader("username", "VictoryScreech");
-		request.setRequestHeader("score", this.score);
-		request.send();
+		// request.open('PUT', ROOT + "leaderboard", false);
+		// request.setRequestHeader("username", "VictoryScreech");
+		// request.setRequestHeader("score", this.score);
+		// request.send();
 		// alert(request.responseText);
 
-		window.location.replace(ROOT + "leaderboard");
+		// window.location.replace(ROOT + "leaderboard");
+		window.location.replace(ROOT + "submit?" + this.score);
 	}, [], this);
 };
 
