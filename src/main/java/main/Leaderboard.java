@@ -54,7 +54,7 @@ public class Leaderboard extends HttpServlet {
 		
 		final String selectSql = "SELECT username, score FROM scores ORDER BY score DESC LIMIT 10";
 		String html =
-			"!<DOCTYPE html>\n" +
+			"<!DOCTYPE html>\n" +
 			"<html>\n" +
 			"<body>\n" +
 			"<h1>Leaderboard Top 10</h2>\n" +
