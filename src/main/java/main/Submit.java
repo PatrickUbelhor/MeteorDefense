@@ -21,18 +21,17 @@ public class Submit extends HttpServlet {
 			"<body>\n" +
 			"<h1>Your score was %d!</h1>\n" +
 			"Username<br>\n" +
-			"<input type=\"text\" id=\"nameText\" value =\"\"><br>\n" +
+			"<input type=\"text\" id=\"nameText\" value =\"\"><br><br>\n" +
 			"<button type=\"button\" onclick=\"sendScore()\">Try it</button>\n" +
 			
 			"<script>\n" +
 			"function sendScore() {\n" +
 			"   var request = new XMLHttpRequest();\n" +
 			"   request.open('PUT', \"https://meteor-defense.appspot.com/leaderboard\", false);\n" +
-			"   request.setRequestHeader(\"username\", \"Victory\");\n" +
+			"   request.setRequestHeader(\"username\", document.getElementById(\"nameText\").value);\n" +
 			"   request.setRequestHeader(\"score\", %d);\n" +
 			"   request.send();\n" +
 			"   window.location.replace(\"https://meteor-defense.appspot.com/leaderboard\");\n" +
-//			"   document.getElementById(\"nameText\").value;\n" +
 			"}\n" +
 			"</script>\n" +
 			

@@ -53,17 +53,36 @@ public class Leaderboard extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		
 		final String selectSql = "SELECT username, score FROM scores ORDER BY score DESC LIMIT 10";
+		String html =
+			"!<DOCTYPE html>\n" +
+			"<html>\n" +
+			"<body>\n" +
+			"<h1>Leaderboard Top 10</h2>\n" +
+			"<table style=\"width:25%\">\n" +
+			"   <tr>\n" +
+			"       <th>Name</th>\n" +
+			"       <th>Score</th>\n" +
+			"   </tr>\n";
 		
 		PrintWriter out = response.getWriter();
-		response.setContentType("text/plain");
+		response.setContentType("text/html");
 		
 		try (ResultSet rs = conn.prepareStatement(selectSql).executeQuery()) {
-			out.print("Highest 10 scores:\n");
 			while (rs.next()) {
 				String savedName = rs.getString("username");
 				String savedScore = rs.getString("score");
-				out.print("User: " + savedName + "  Score: " + savedScore + "\n");
+				
+				html += "   <tr>\n" +
+				        "       <td>" + savedName + "</td>\n" +
+				        "       <td>" + savedScore + "</td>\n" +
+				        "   </tr>\n";
 			}
+			
+			html += "</table>\n" +
+			        "</body>\n" +
+			        "</html>";
+			
+			out.print(html);
 		} catch (SQLException e) {
 			throw new ServletException("SQL error", e);
 		}
