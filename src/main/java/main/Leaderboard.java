@@ -57,7 +57,7 @@ public class Leaderboard extends HttpServlet {
 			"<!DOCTYPE html>\n" +
 			"<html>\n" +
 			"<body>\n" +
-			"<h1>Leaderboard Top 10</h2>\n" +
+			"<h1>Leaderboard Top 10</h1>\n" +
 			"<table style=\"width:25%\">\n" +
 			"   <tr>\n" +
 			"       <th>Name</th>\n" +
