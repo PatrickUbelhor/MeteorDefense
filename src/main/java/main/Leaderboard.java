@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Patrick Ubelhor
- * @version 04/23/2018
+ * @version 04/25/2018
  */
 public class Leaderboard extends HttpServlet {
 	private java.sql.Connection conn;
@@ -119,7 +119,8 @@ public class Leaderboard extends HttpServlet {
 					"?cloudSqlInstance=" + instance +
 					"&socketFactory=com.google.cloud.sql.mysql.SocketFactory&user=" + user +
 					"&password=" + password +
-					"&useSSL=false";
+					"&useSSL=false" +
+					"&autoReconnect=true";
 				
 				
 			} catch (IOException e) {
