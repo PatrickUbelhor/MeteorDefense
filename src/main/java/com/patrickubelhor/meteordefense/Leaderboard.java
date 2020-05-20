@@ -1,4 +1,4 @@
-package main;
+package com.patrickubelhor.meteordefense;
 
 import java.io.IOException;
 

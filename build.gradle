@@ -1,76 +1,37 @@
-group 'PatrickUbelhor'
-version '1.0-SNAPSHOT'
+buildscript {
+	repositories {
+		mavenCentral()
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+	}
+
+	dependencies {
+		classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.2.7.RELEASE'
+		classpath 'com.github.node-gradle:gradle-node-plugin:2.2.3'
+	}
+}
 
 apply plugin: 'java'
-apply plugin: 'war'                               // standard Web Archive plugin
-apply plugin: 'com.google.cloud.tools.appengine'  // App Engine tasks
+apply plugin: 'war'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
-sourceCompatibility = 1.8    // App Engine Flexible uses Java 8
-targetCompatibility = 1.8    // App Engine Flexible uses Java 8
+group 'PatrickUbelhor'
+version '2.0.0'
 
+sourceCompatibility = 1.11
+targetCompatibility = 1.11
 
-buildscript {    // Configuration for building
-    repositories {
-        jcenter()    // Bintray's repository - a fast Maven Central mirror & more
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.google.cloud.tools:appengine-gradle-plugin:+'    // latest App Engine Gradle tasks
-    }
+repositories {
+	mavenCentral()
 }
-
-repositories {   // repositories for Jar's you access in your code
-    maven {
-        url 'https://oss.sonatype.org/content/repositories/snapshots' // SNAPSHOT repository (if needed)
-    }
-    mavenCentral()
-    jcenter()
-}
-
 
 dependencies {
-    compile 'com.google.appengine:appengine-api-1.0-sdk:+'  // Latest App Engine Api's
-    providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
-
-    compile 'jstl:jstl:1.2'
-
-// Add your dependencies here.
-//  compile 'com.google.cloud:google-cloud:+'   // Latest Cloud API's http://googlecloudplatform.github.io/google-cloud-java
-    compile 'com.sparkjava:spark-core:2.3'
-    compile 'mysql:mysql-connector-java:6.0.5'
-    compile 'com.google.cloud.sql:mysql-socket-factory-connector-j-6:1.0.5'
-
-    testCompile 'junit:junit:4.12'
-    testCompile 'com.google.truth:truth:0.33'
-    testCompile 'org.mockito:mockito-all:1.10.19'
-
-    testCompile 'com.google.appengine:appengine-testing:+'
-    testCompile 'com.google.appengine:appengine-api-stubs:+'
-    testCompile 'com.google.appengine:appengine-tools-sdk:+'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+	implementation group: 'org.apache.logging.log4j', name: 'log4j-core',   version: '2.13.2'
 }
 
-
-// Always run unit tests
-appengineDeploy.dependsOn test
-appengineStage.dependsOn test
-
-appengine {  // App Engine tasks configuration
-    deploy {   // deploy configuration
-
-    }
-}
-
-test {
-    useJUnit()
-    testLogging.showStandardStreams = true
-    beforeTest { descriptor ->
-        logger.lifecycle("test: " + descriptor + "  Running")
-    }
-
-    onOutput { descriptor, event ->
-        logger.lifecycle("test: " + descriptor + ": " + event.message )
-    }
-    afterTest { descriptor, result ->
-        logger.lifecycle("test: " + descriptor + ": " + result )
-    }
+wrapper {
+	gradleVersion '6.4.1'
 }

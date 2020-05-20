@@ -1,5 +1,6 @@
 // Create a new scene named "Game"
-let ROOT = "https://meteor-defense.appspot.com/";
+// let ROOT = "https://meteor-defense.appspot.com/";
+let ROOT = "http://localhost:8080/api/v1/";
 let scene = new Phaser.Scene('Game');
 
 // Our game's configuration
@@ -155,7 +156,7 @@ scene.gameOver = function() {
 	// Restart game
 	this.time.delayedCall(500, function() {
 		// this.scene.restart();
-		window.location.replace(ROOT + "submit?" + this.score);
+		window.location.replace(ROOT + "submit?score=" + this.score);
 	}, [], this);
 };
 
