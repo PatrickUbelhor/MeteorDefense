@@ -1,0 +1,8 @@
+
+DROP TABLE IF EXISTS scores;
+
+CREATE TABLE scores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(3) NOT NULL,
+    score INT NOT NULL
+);
