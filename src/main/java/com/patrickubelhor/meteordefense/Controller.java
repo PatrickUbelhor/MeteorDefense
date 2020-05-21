@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -15,8 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RestController
-@RequestMapping(value = "/api/v1", produces = MediaType.APPLICATION_JSON_VALUE)
+@org.springframework.stereotype.Controller
 public class Controller {
 	
 	private static final Logger logger = LogManager.getLogger(Controller.class);
@@ -30,30 +30,11 @@ public class Controller {
 	}
 	
 	
-	@GetMapping(value = "/submit", produces = MediaType.TEXT_HTML_VALUE)
-	public ResponseEntity<String> submit(@RequestParam("score") Integer score) {
-		String response =
-				"<!DOCTYPE html>\n\n" +
-						"<html>\n" +
-						"<body>\n" +
-						"<h1>Your score was %d!</h1>\n" +
-						"Username<br>\n" +
-						"<input type=\"text\" id=\"nameText\" value =\"\"><br><br>\n" +
-						"<button type=\"button\" onclick=\"sendScore()\">Try it</button>\n" +
-						"<script>\n" +
-						"function sendScore() {\n" +
-						"   var request = new XMLHttpRequest();\n" +
-						"   request.open('PUT', \"http://localhost:8080/api/v1/leaderboard\", false);\n" +
-						"   request.setRequestHeader(\"username\", document.getElementById(\"nameText\").value);\n" +
-						"   request.setRequestHeader(\"score\", %d);\n" +
-						"   request.send();\n" +
-						"   window.location.replace(\"http://localhost:8080/api/v1/leaderboard\");\n" +
-						"}\n" +
-						"</script>\n" +
-						"</body>\n" +
-						"</html>";
+	@RequestMapping(value = "/submit")
+	public String submit(Model model, @RequestParam("score") Integer score) {
+		model.addAttribute("score", score);
 		
-		return ResponseEntity.ok(String.format(response, score, score));
+		return "submit";
 	}
 	
 	

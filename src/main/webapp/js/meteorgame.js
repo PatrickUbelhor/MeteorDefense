@@ -1,6 +1,5 @@
 // Create a new scene named "Game"
-// let ROOT = "https://meteor-defense.appspot.com/";
-let ROOT = "http://localhost:8080/api/v1/";
+let ROOT = "http://localhost:8080/";
 let scene = new Phaser.Scene('Game');
 
 // Our game's configuration
