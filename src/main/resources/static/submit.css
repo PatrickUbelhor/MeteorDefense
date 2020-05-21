@@ -1,0 +1,23 @@
+
+body {
+	padding-top: 10%;
+	padding-left: 5%;
+	padding-right: 5%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-family: Roboto, sans-serif;
+}
+
+#score {
+	font-size: 5rem;
+	margin-bottom: 1rem;
+}
+
+#label {
+	margin-right: 6em;
+}
+
+#usernameField {
+	margin-bottom: 2em;
+}

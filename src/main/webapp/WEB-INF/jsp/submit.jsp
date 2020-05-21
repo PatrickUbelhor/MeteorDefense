@@ -1,19 +1,17 @@
-<%--<%@ page contentType="text/html;charset=UTF-8" %>--%>
 
 <!DOCTYPE html>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <html>
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="submit.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
     <title>Submit Score</title>
 </head>
 <body>
-    <h1>Your score was ${score}!</h1>
-    Username
-    <br>
-    <input type="text" id="nameText" value="" />
-    <br>
-    <br>
+    <div id="score">Your score was ${score}!</div>
+    <div id="label">Username</div>
+    <input type="text" id="usernameField" value="" maxlength="3" />
     <button type="button" onclick="sendScore()">Submit</button>
     <script>
         function sendScore() {
