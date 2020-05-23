@@ -1,6 +1,7 @@
 import './css/App.css';
 import React from 'react';
 import Server from './api/Server';
+import Game from './Game';
 
 class App extends React.Component {
 
@@ -17,6 +18,7 @@ class App extends React.Component {
 		return (
 			<div>
 				Meteor Defense
+				<Game />
 			</div>
 		);
 	}
