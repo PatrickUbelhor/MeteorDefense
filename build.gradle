@@ -16,6 +16,7 @@ apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'com.github.node-gradle.node'
 
 group 'com.patrickubelhor'
 version '2.0.0'
@@ -39,4 +40,30 @@ dependencies {
 
 wrapper {
 	gradleVersion '6.4.1'
+}
+
+task copyReact(type: Copy) {
+	from 'react/build'
+	into 'build/resources/main/static/.'
+}
+
+task appNpmBuild(type: NpmTask) {
+	description = 'Builds production version of the webapp'
+	args = ['run', 'build']
+}
+
+task appNpmInstall(type: NpmTask) {
+	description = 'Installs all dependencies from package.json'
+	args = ['install']
+}
+
+appNpmBuild.dependsOn appNpmInstall
+copyReact.dependsOn appNpmBuild
+compileJava.dependsOn copyReact
+
+node {
+	version = '14.3.0'
+	npmVersion = '6.14.5'
+	download = false
+	nodeModulesDir = file("${project.projectDir}/react")
 }

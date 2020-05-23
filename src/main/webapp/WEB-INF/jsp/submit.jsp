@@ -17,7 +17,7 @@
         function sendScore() {
             let request = new XMLHttpRequest();
             request.open('PUT', "http://localhost:8080/leaderboard", false);
-            request.setRequestHeader("username", document.getElementById("nameText").value);
+            request.setRequestHeader("username", document.getElementById("usernameField").value);
             request.setRequestHeader("score", ${score});
             request.send();
             window.location.replace("http://localhost:8080/leaderboard");

@@ -51,8 +51,9 @@ scene.init = function() {
 
 	// Variables
 	this.score = 0;
-	this.playerHealth = 10;
+	// this.playerHealth = 10;
 };
+
 
 /**
  * Buffers the images/assets for future use.
@@ -64,6 +65,7 @@ scene.preload = function() {
 	this.load.image('bunker', baseImg);
 	this.load.image('barrel', barrelImg);
 };
+
 
 /**
  * Places initial objects on the scene (runs once).
@@ -104,7 +106,13 @@ scene.create = function() {
 	this.cameras.main.resetFX();
 	this.playerHealth = 5;
 	this.score = 0;
+
+
+	this.input.on('pointerdown', (pointer) => {
+		this.shoot(this.getPointerAngle(pointer.x, pointer.y, this.barrel));
+	}, this);
 };
+
 
 /**
  * Runs once every time the screen is refreshed (optimally 60Hz). Important
@@ -121,10 +129,6 @@ scene.update = function() {
 	let deltaY = this.barrel.y - this.input.activePointer.y;
 	let angle = Math.atan2(deltaY, deltaX) - (Math.PI / 2); // Rotate 90 degrees so y axis is polar 0
 	this.barrel.angle = radToDeg(angle);
-
-	if (this.input.activePointer.justDown && !this.bullet.isMoving) {
-		this.shoot(angle);
-	}
 
 	// Move bullet and check for intersection with meteors
 	this.bullet.x += this.bullet.speedX;
@@ -163,6 +167,7 @@ scene.update = function() {
 	}
 };
 
+
 /**
  * Called in scene.update() when the player has lost.
  */
@@ -179,12 +184,14 @@ scene.gameOver = function() {
 	}, [], this);
 };
 
+
 scene.shoot = function(angle) {
 	this.bullet.speedX = -Math.sin(angle) * this.bulletSpeed;
 	this.bullet.speedY = Math.cos(angle) * this.bulletSpeed;
 	this.bullet.angle = radToDeg(angle);
 	this.bullet.isMoving = true;
 };
+
 
 scene.resetMeteor = function(meteor) {
 	meteor.x = (Math.random() - 0.5) * this.meteorSpawnRangeX + this.meteorSpawnCenter;
@@ -193,12 +200,14 @@ scene.resetMeteor = function(meteor) {
 	meteor.angularVel = (Math.random() - 0.5) * this.meteorAngularVelRange + this.meteorAngularVelBase;
 };
 
+
 scene.resetMeteors = function(meteors) {
 	let len = meteors.length;
 	for (let i = 0; i < len; i++) {
 		this.resetMeteor(meteors[i]);
 	}
 };
+
 
 scene.resetBullet = function(bullet) {
 	bullet.x = this.sys.game.config.width / 2;
@@ -208,9 +217,17 @@ scene.resetBullet = function(bullet) {
 	bullet.isMoving = false;
 };
 
+
 let radToDeg = function(angle) {
 	return (360 * angle / (2 * Math.PI));
 };
+
+
+scene.getPointerAngle = (pointerX, pointerY, barrel) => {
+	let deltaX = barrel.x - pointerX;
+	let deltaY = barrel.y - pointerY;
+	return Math.atan2(deltaY, deltaX) - (Math.PI / 2); // Rotate 90 degrees so y axis is polar 0
+}
 
 
 ReactDOM.render(<App/>, document.getElementById('root'));
