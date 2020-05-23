@@ -39,7 +39,7 @@ public class Controller {
 	
 	
 	@PutMapping("/leaderboard")
-	public ResponseEntity<Void> postScore(
+	public ResponseEntity<List<ScoreListing>> postScore(
 			@RequestHeader("username") String username,
 			@RequestHeader("score") Integer score
 	) {
@@ -47,7 +47,7 @@ public class Controller {
 		logger.info("{}: {}", username, score);
 		scoreService.saveScore(username, score);
 		
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok(scoreService.getLeaderboard());
 	}
 	
 	
