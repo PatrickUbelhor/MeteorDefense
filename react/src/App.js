@@ -2,6 +2,7 @@ import './css/App.css';
 import React from 'react';
 import Server from './api/Server';
 import Game from './Game';
+import Leaderboard from './Leaderboard';
 import Submit from './Submit';
 
 class App extends React.Component {
@@ -16,19 +17,22 @@ class App extends React.Component {
 
 
 	onScoreSubmit = async (username, score) => {
-		let leaderboard = await Server.put('/leaderboard', {
+		let leaderboard = await Server.put('/leaderboard', {},{
 			headers: {
 				username: username,
 				score: score
 			}
 		});
+
+		this.setState({
+			topComponent: <Leaderboard entries={leaderboard} />
+		});
 	}
 
 
-	updateScore = (score) => {
-		let submit = <Submit score={score} onSubmit={this.onScoreSubmit} />;
+	onGameEnd = (score) => {
 		this.setState({
-			topComponent: submit
+			topComponent: <Submit score={score} onSubmit={this.onScoreSubmit} />
 		});
 	}
 
@@ -37,7 +41,7 @@ class App extends React.Component {
 		return (
 			<div>
 				{this.state.topComponent}
-				<Game onEnd={this.updateScore} />
+				<Game onEnd={this.onGameEnd} />
 			</div>
 		);
 	}

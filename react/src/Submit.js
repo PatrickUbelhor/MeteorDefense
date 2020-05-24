@@ -16,7 +16,7 @@ class Submit extends React.Component {
 	onFormSubmit = (event) => {
 		event.preventDefault();
 		let strippedName = this.state.username.replace(/\s+/g, '');
-		this.state.onSubmit(strippedName, this.score);
+		this.state.onSubmit(strippedName, this.state.score);
 	}
 
 
