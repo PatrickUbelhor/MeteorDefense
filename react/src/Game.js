@@ -9,8 +9,18 @@ import meteor1Img from './assets/meteor1.png';
 
 export default class Game extends React.Component {
 
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			sendScore: props.onEnd
+		}
+	}
+
+
 	componentDidMount() {
 		let scene = new Phaser.Scene('Game');
+		let sendScore = this.state.sendScore;
 		let radToDeg = function(angle) {
 			return (360 * angle / (2 * Math.PI));
 		};
@@ -85,7 +95,7 @@ export default class Game extends React.Component {
 			this.score = 0;
 
 			this.input.on('pointerdown', (pointer) => {
-				this.shoot(this.getPointerAngle(pointer.x, pointer.y, this.barrel));
+				this.shoot(this.getPointerAngle(pointer.x, pointer.y));
 			}, this);
 		};
 
@@ -99,9 +109,7 @@ export default class Game extends React.Component {
 
 			let meteors = this.meteors.getChildren();
 
-			let deltaX = this.barrel.x - this.input.activePointer.x;
-			let deltaY = this.barrel.y - this.input.activePointer.y;
-			let angle = Math.atan2(deltaY, deltaX) - (Math.PI / 2); // Rotate 90 degrees so y axis is polar 0
+			let angle = this.getPointerAngle(this.input.activePointer.x, this.input.activePointer.y);
 			this.barrel.angle = radToDeg(angle);
 
 			// Move bullet and check for intersection with meteors
@@ -119,7 +127,6 @@ export default class Game extends React.Component {
 			if (!Phaser.Geom.Intersects.RectangleToRectangle(this.bullet.getBounds(), this.background.getBounds())) {
 				this.resetBullet(this.bullet);
 			}
-
 
 			// Move meteor and check for intersection with bunker
 			for (let i = 0; i < this.maxNumMeteors; i++) {
@@ -155,6 +162,7 @@ export default class Game extends React.Component {
 			this.time.delayedCall(500, function() {
 				// this.scene.restart();
 				// window.location.replace(ROOT + "submit?score=" + this.score);
+				sendScore(this.score);
 			}, [], this);
 		};
 
@@ -166,8 +174,7 @@ export default class Game extends React.Component {
 		};
 
 		scene.resetMeteors = function(meteors) {
-			let len = meteors.length;
-			for (let i = 0; i < len; i++) {
+			for (let i = 0; i < meteors.length; i++) {
 				this.resetMeteor(meteors[i]);
 			}
 		};
@@ -187,9 +194,9 @@ export default class Game extends React.Component {
 			this.bullet.isMoving = true;
 		};
 
-		scene.getPointerAngle = (pointerX, pointerY, barrel) => {
-			let deltaX = barrel.x - pointerX;
-			let deltaY = barrel.y - pointerY;
+		scene.getPointerAngle = function(pointerX, pointerY) {
+			let deltaX = this.barrel.x - pointerX;
+			let deltaY = this.barrel.y - pointerY;
 			return Math.atan2(deltaY, deltaX) - (Math.PI / 2); // Rotate 90 degrees so y axis is polar 0
 		}
 
@@ -202,4 +209,3 @@ export default class Game extends React.Component {
 	}
 
 }
-
