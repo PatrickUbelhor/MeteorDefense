@@ -1,0 +1,20 @@
+
+#submitDiv {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 2em;
+}
+
+#score {
+	font-size: 2rem;
+	margin-bottom: 0.5em;
+}
+
+#usernameField {
+	margin-bottom: 0.75em;
+}
+
+#submitButton {
+
+}

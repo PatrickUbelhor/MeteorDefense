@@ -59,7 +59,7 @@ task appNpmInstall(type: NpmTask) {
 
 appNpmBuild.dependsOn appNpmInstall
 copyReact.dependsOn appNpmBuild
-compileJava.dependsOn copyReact
+//compileJava.dependsOn copyReact
 
 node {
 	version = '14.3.0'

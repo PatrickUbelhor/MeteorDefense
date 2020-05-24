@@ -1,3 +1,4 @@
+import './css/Submit.css';
 import React from 'react';
 
 class Submit extends React.Component {
@@ -22,7 +23,7 @@ class Submit extends React.Component {
 
 	render() {
 		return (
-			<div>
+			<div id="submitDiv">
 				<div id="score">Your score was {this.state.score}!</div>
 				<div id="label">Username</div>
 				<input
@@ -32,7 +33,7 @@ class Submit extends React.Component {
 					onChange={(event) => this.setState({ username: event.target.value })}
 					maxLength={3}
 				/>
-				<button type="button" onClick={this.onFormSubmit}>Submit</button>
+				<button id="submitButton" type="button" onClick={this.onFormSubmit}>Submit</button>
 			</div>
 		);
 	}
