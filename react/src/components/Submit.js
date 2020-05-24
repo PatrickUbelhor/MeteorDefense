@@ -1,4 +1,4 @@
-import './css/Submit.css';
+import '../css/Submit.css';
 import React from 'react';
 
 class Submit extends React.Component {

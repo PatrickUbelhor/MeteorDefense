@@ -1,11 +1,10 @@
 import React from 'react';
 import Phaser from 'phaser';
-import backgroundImg from './assets/background.png';
-import barrelImg from './assets/barrel.png';
-import baseImg from './assets/base.png';
-import bulletImg from './assets/bullet.png';
-import meteor1Img from './assets/meteor1.png';
-
+import backgroundImg from '../assets/background.png';
+import barrelImg from '../assets/barrel.png';
+import baseImg from '../assets/base.png';
+import bulletImg from '../assets/bullet.png';
+import meteor1Img from '../assets/meteor1.png';
 
 export default class Game extends React.Component {
 
@@ -205,7 +204,7 @@ export default class Game extends React.Component {
 	}
 
 	render() {
-		return <div />;
+		return null;
 	}
 
 }

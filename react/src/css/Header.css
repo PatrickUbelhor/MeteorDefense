@@ -1,0 +1,15 @@
+
+#appBar {
+	margin-bottom: 1.4em;
+	padding-right: 1em;
+	color: var(--header_text);
+	background: var(--header);
+}
+
+#home {
+	font-size: 1.6rem;
+}
+
+#home:hover {
+	cursor: pointer;
+}

@@ -1,12 +1,49 @@
+
+:root {
+	--white: #FFFFFF;
+	--blue: #3f51b5;
+	--grey_dark: #23272A;
+	--grey: #2C2F33;
+	--grey_light: #393D41;
+	--black: #000000;
+}
+
 body {
-	margin-left: 5%;
-	margin-right: 5%;
-	font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen',
-		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+	margin: 0;
+	padding: 0;
+	font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Fira Sans', 'Segoe UI',
+		'Oxygen','Ubuntu', 'Cantarell', 'Droid Sans', 'Helvetica Neue', sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+
+	background: var(--wallpaper);
+	color: var(--text);
+	transition: background 500ms ease-in-out, color 1000ms ease-in-out;
 }
 
 code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.light {
+	--header: var(--blue);
+	--wallpaper: var(--white);
+	--elements: var(--white);
+	--text: var(--black);
+	--header_text: var(--white);
+	--primary: var(--blue);
+}
+
+.dark {
+	--header: var(--grey_dark);
+	--wallpaper: var(--grey);
+	--elements: var(--grey_light);
+	--text: var(--white);
+	--header_text: var(--white);
+	--primary: var(--blue);
+}
+
+canvas {
+	margin-left: 5%;
+	margin-right: 5%;
 }

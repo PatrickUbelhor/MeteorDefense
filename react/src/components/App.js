@@ -1,7 +1,8 @@
-import './css/App.css';
+import '../css/App.css';
 import React from 'react';
-import Server from './api/Server';
+import Server from '../api/Server';
 import Game from './Game';
+import Header from './Header';
 import Leaderboard from './Leaderboard';
 import Submit from './Submit';
 
@@ -40,8 +41,11 @@ class App extends React.Component {
 	render() {
 		return (
 			<div>
-				{this.state.topComponent}
-				<Game onEnd={this.onGameEnd} />
+				<Header />
+				<div className="content">
+					{this.state.topComponent}
+					<Game onEnd={this.onGameEnd} />
+				</div>
 			</div>
 		);
 	}
