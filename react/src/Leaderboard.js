@@ -3,6 +3,7 @@ import React from 'react';
 function Leaderboard(props) {
 
 	let rows = [];
+	console.log("Entries: " + props.entries.length);
 	for (let i = 0; i < props.entries.length; i++) {
 		let row = (
 			<tr>

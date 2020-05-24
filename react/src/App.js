@@ -17,7 +17,7 @@ class App extends React.Component {
 
 
 	onScoreSubmit = async (username, score) => {
-		let leaderboard = await Server.put('/leaderboard', {},{
+		let leaderboardReq = await Server.put('/leaderboard', {},{
 			headers: {
 				username: username,
 				score: score
@@ -25,7 +25,7 @@ class App extends React.Component {
 		});
 
 		this.setState({
-			topComponent: <Leaderboard entries={leaderboard} />
+			topComponent: <Leaderboard entries={leaderboardReq.data} />
 		});
 	}
 
