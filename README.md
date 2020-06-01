@@ -21,5 +21,5 @@ A web game in which players shoot down incoming meteors.
   to the Cloud Platform via basic Gradle commands.
   
 ## Artwork
-  * Jacob Kennedy - [website](https://jacubkennedy.artstation.com)
+  * Jacob Kennedy - [website](https://jacobkennedy.artstation.com)
   * Luis Gallegos - lfgallegos99@gmail.com
