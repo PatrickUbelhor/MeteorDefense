@@ -32,11 +32,11 @@ export default class Game extends React.Component {
 		};
 
 		scene.init = function() {
-			this.bulletSpeed = -20;
-			this.meteorAngularVelBase = 0.2;
-			this.meteorAngularVelRange = 4;
-			this.meteorSpeedMultiplier = 3;
-			this.meteorSpeedBase = 2;
+			this.bulletSpeed = -10;
+			this.meteorAngularVelBase = 0.1;
+			this.meteorAngularVelRange = 2;
+			this.meteorSpeedMultiplier = 1.5;
+			this.meteorSpeedBase = 1;
 			this.meteorSpawnLowest = -50;
 			this.meteorSpawnRangeY = 50;
 			this.meteorSpawnCenter = this.sys.game.config.width / 2;
